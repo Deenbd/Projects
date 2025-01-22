@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Send Comment | Deen Projects</title>
+
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100%;
+            font-family: atma;
+            margin: 0;
+        }
+
+        form {
+            background-color: #d1d1d1;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 500px;
+            margin: 30px 0;
+        }
+
+        .field {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .field label {
+            font-size: 14px;
+            color: #777;
+            flex: 0 0 70px; /* লেবেলের প্রস্থ ঠিক রাখে */
+            text-align: right;
+            margin-right: 10px;
+        }
+
+        .field input, .field textarea {
+            flex: 1;
+            line-height: 1.5;
+            font-size: 14px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #9efff1;
+        }
+
+        .comment-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #message {
+            flex: 1;
+            width: 10%;
+        }
+
+        #sendImage {
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            margin-left: 5px;
+            transition: transform 0.2s ease;
+            background-color: #a4ffa4;
+            border-radius: 10px;
+        }
+
+        #sendImage:hover {
+            transform: scale(1.1);
+        }
+
+        input[type="date"] {
+            display: none; /* তারিখ ইনপুট হাইড */
+        }
+        lebel {
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <form id="form">
+        <div class="field">
+            <label for="from_name">Name</label>
+            <input type="text" name="from_name" id="from_name" required>
+        </div>
+        <div class="field">
+            <label for="message">Comment</label>
+            <div class="comment-row">
+                <textarea name="message" id="message" rows="2" required></textarea>
+                <img src="send.png" id="sendImage" alt="Send">
+            </div>
+        </div>
+        <input type="date" name="date" id="date"> <!-- তারিখ ইনপুট হাইড -->
+    </form>
+
+    <script type="text/javascript">
+        // তারিখ অটো-মেটিক সেট করা এবং সাবমিট করা
+        document.getElementById('sendImage').addEventListener('click', function() {
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedDate;
+
+            const form = document.getElementById('form');
+            const formData = new FormData(form);
+
+            // সাবমিট করার প্রক্রিয়া
+            fetch('https://script.google.com/macros/s/AKfycbzNLhIWLCbi4_z-_ZfE2SrOBTPFbS71oIA7JDw_MHbwxSsA2R7xmrlN8yhVuWUvcW23ig/exec', { 
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('আপনার কমেন্ট পাঠানো হয়েছে!');
+            })
+            .catch(error => {
+                alert('ত্রুটি ঘটেছে। আবার চেষ্টা করুন!');
+            });
+        });
+    </script>
+</body>
+</html>
