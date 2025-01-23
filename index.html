@@ -4,58 +4,80 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Send Comment | Deen Projects</title>
+
     <style>
         body {
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
-            height: 100vh;
+            height: 100%;
+            font-family: atma;
             margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f9f9f9;
         }
 
         form {
-            background-color: #ffffff;
+            background-color: #d1d1d1;
             padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            max-width: 400px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
             width: 100%;
+            max-width: 500px;
+            margin: 30px 0;
         }
 
         .field {
-            margin-bottom: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
         }
 
         .field label {
             font-size: 14px;
-            margin-bottom: 5px;
-            display: block;
+            color: #777;
+            flex: 0 0 70px;
+            text-align: right;
+            margin-right: 10px;
         }
 
         .field input, .field textarea {
-            width: 100%;
+            flex: 1;
+            line-height: 1.5;
+            font-size: 14px;
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 5px;
+            background-color: #9efff1;
+        }
+
+        .comment-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #message {
+            flex: 1;
         }
 
         #sendImage {
             width: 50px;
             height: 50px;
             cursor: pointer;
-            display: block;
-            margin: 0 auto;
-            background-color: #4CAF50;
-            border-radius: 50%;
-            transition: transform 0.2s;
+            margin-left: 5px;
+            transition: transform 0.2s ease;
+            background-color: #a4ffa4;
+            border-radius: 10px;
         }
 
         #sendImage:hover {
             transform: scale(1.1);
         }
+
+        input[type="date"] {
+            display: none; /* তারিখ ইনপুট হাইড */
+        }
+
     </style>
 </head>
 <body>
@@ -66,15 +88,17 @@
         </div>
         <div class="field">
             <label for="message">Comment</label>
-            <textarea name="message" id="message" rows="3" required></textarea>
+            <div class="comment-row">
+                <textarea name="message" id="message" rows="2" required></textarea>
+                <img src="send.png" id="sendImage" alt="Send">
+            </div>
         </div>
-        <input type="date" name="date" id="date" hidden>
-        <img src="send.png" id="sendImage" alt="Send">
+        <input type="date" name="date" id="date" hidden> <!-- হাইড করা ইনপুট -->
     </form>
 
-    <script>
-        // Date automatically sets to today's date
-        document.getElementById('sendImage').addEventListener('click', function () {
+    <script type="text/javascript">
+        // তারিখ অটো-মেটিক সেট করা এবং সাবমিট করা
+        document.getElementById('sendImage').addEventListener('click', function() {
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0];
             document.getElementById('date').value = formattedDate;
@@ -82,24 +106,18 @@
             const form = document.getElementById('form');
             const formData = new FormData(form);
 
-            // Send data to Google Apps Script
-            fetch('https://script.google.com/macros/s/AKfycbxkhyuih-MLW1Zw95DDI2mZkC3zlpaxU-vAiUlyyVdXovNcHwB5iLYhuRLChnSdu6OAJQ/exec', { // Replace with your deployment URL
+            // সাবমিট করার প্রক্রিয়া
+            fetch('https://script.google.com/macros/s/AKfycbzNLhIWLCbi4_z-_ZfE2SrOBTPFbS71oIA7JDw_MHbwxSsA2R7xmrlN8yhVuWUvcW23ig/exec', { 
                 method: 'POST',
-                body: formData,
+                body: formData
             })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === 'success') {
-                        alert('Your comment has been sent successfully!');
-                        form.reset();
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    alert('An error occurred. Please try again.');
-                    console.error('Error:', error);
-                });
+            .then(response => response.json())
+            .then(data => {
+                alert('আপনার কমেন্ট পাঠানো হয়েছে!');
+            })
+            .catch(error => {
+                alert('ত্রুটি ঘটেছে। আবার চেষ্টা করুন!');
+            });
         });
     </script>
 </body>
