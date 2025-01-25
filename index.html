@@ -97,28 +97,32 @@
     </form>
 
     <script type="text/javascript">
-        // তারিখ অটো-মেটিক সেট করা এবং সাবমিট করা
-        document.getElementById('sendImage').addEventListener('click', function() {
-            const today = new Date();
-            const formattedDate = today.toISOString().split('T')[0];
-            document.getElementById('date').value = formattedDate;
+    document.getElementById('sendImage').addEventListener('click', function () {
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        document.getElementById('date').value = formattedDate;
 
-            const form = document.getElementById('form');
-            const formData = new FormData(form);
+        const form = document.getElementById('form');
+        const formData = new FormData(form);
 
-            // সাবমিট করার প্রক্রিয়া
-            fetch('https://script.google.com/macros/s/AKfycbzNLhIWLCbi4_z-_ZfE2SrOBTPFbS71oIA7JDw_MHbwxSsA2R7xmrlN8yhVuWUvcW23ig/exec', { 
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
+        fetch('https://script.google.com/macros/s/AKfycbwJV8DC6tHVXyt4ArerqWkoQCrKb7tZh4QEKFkvuBE9enNxZtEyl5HfmOqCLT4YGRpU/exec', { 
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success') {
                 alert('আপনার কমেন্ট পাঠানো হয়েছে!');
-            })
-            .catch(error => {
-                alert('ত্রুটি ঘটেছে। আবার চেষ্টা করুন!');
-            });
+            } else {
+                alert('ত্রুটি: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('ত্রুটি ঘটেছে। আবার চেষ্টা করুন!');
+            console.error('Error:', error);
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
